@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:safuami/app/controllers/home_controller.dart';
+import 'package:safuami/app/ui/utils/style_utils.dart';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class HomePage extends GetView<HomeController> {
+  @override
+  Widget build(BuildContext context) {
+    // Obtener el tamaño de la pantalla del dispositivo
+    Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      //appBar: AppBar(title: Text('HomePage')),
+
+      body: SafeArea(
+        child: GetBuilder<HomeController>(
+          init: HomeController(screenSize),
+          builder: (homeCtrl) {
+            return Container(
+              constraints: BoxConstraints.expand(),
+              child: Column(
+                children: [
+                  //*Header
+                  Container(
+                    constraints: BoxConstraints.expand(height: homeCtrl.headerHeight.toDouble()),
+                    color:ACC_DENIED,
+                  ),
+                  //*Section
+                  Container(
+                    constraints: BoxConstraints.expand(height: homeCtrl.sectionHeight.toDouble()),
+                    color: ACC_PROS,
+                  ),
+                  //*Footer
+                  Expanded(
+                    child: Container(
+                      constraints: BoxConstraints.expand(),
+                      color: ACC_SUCCESFULL,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
