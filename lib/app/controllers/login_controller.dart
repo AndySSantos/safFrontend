@@ -56,6 +56,11 @@ class LoginController extends GetxController {
     //error handler
     if (body is ErrorHandler) {
       EasyLoading.showError(body.message);
+      
+      if (body.code == 403){
+        Get.toNamed(Routes.CHECK);
+      }
+      
     }
     else if(body is Token){
       print(body.token);

@@ -24,6 +24,8 @@ class LoginRepository {
     try {
       final raw = await loginProvider.login(email: email, password: password);
       final data =raw.body;
+
+      //print(data);
       
       // Verificar el contenido de 'data' y manejar excepciones según los casos
       if (data.containsKey('token')) {
@@ -47,6 +49,39 @@ class LoginRepository {
       if (data.containsKey('token')) {
         return Token.fromJson(data);
       } else if (data.containsKey('message') && data.containsKey('code')) {
+        return ErrorHandler.fromJson(data);
+      } else {
+        throw CustomException('Respuesta inesperada del servidor');
+      }
+    } catch (e) {
+      throw CustomException('Error de conexión');
+    }
+  }
+
+  Future<Object> postSendCode({required String userId}) async{
+    try {
+      final raw = await loginProvider.sendCode(userId: userId);
+      final data =raw.body;
+      
+      // Verificar el contenido de 'data' y manejar excepciones según los casos
+      if (data.containsKey('message') && data.containsKey('code')) {
+        return ErrorHandler.fromJson(data);
+      } else {
+        throw CustomException('Respuesta inesperada del servidor');
+      }
+    } catch (e) {
+      throw CustomException('Error de conexión');
+    }
+  }
+
+
+  Future<Object> postVerifyCode({required String userId, required String code}) async{
+    try {
+      final raw = await loginProvider.verifyCode(userId: userId, code: code);
+      final data =raw.body;
+      
+      // Verificar el contenido de 'data' y manejar excepciones según los casos
+      if (data.containsKey('message') && data.containsKey('code')) {
         return ErrorHandler.fromJson(data);
       } else {
         throw CustomException('Respuesta inesperada del servidor');

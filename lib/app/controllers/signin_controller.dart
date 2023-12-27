@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:safuami/app/data/model/error_handler.dart';
 import 'package:safuami/app/data/model/token.dart';
 import 'package:safuami/app/data/repository/login_repository.dart';
@@ -8,6 +9,7 @@ import 'package:safuami/app/routes/pages.dart';
 import 'package:safuami/app/ui/utils/style_utils.dart';
 
 class SigninController extends GetxController {
+  final box = GetStorage();
 
    // Obtener la altura y el ancho del dispositivo
   double deviceWidth = 0.0;
@@ -56,18 +58,24 @@ class SigninController extends GetxController {
 
   invoqueRepository() async{
     final body = await repository.postSignin(email: emailCnt.text , password: passCnt.text);
-    print(body);
+    //print(body);
 
     //error handler
     if (body is ErrorHandler) {
       EasyLoading.showError(body.message);
     }
     else if(body is Token){
-      print(body.token);
+      //print(body.token);
+      _saveToken(body);
       EasyLoading.showSuccess('Account created');
       Get.toNamed(Routes.CHECK);
     }
     
+  }
+
+
+  void _saveToken(Token token) {
+    box.write('token', token.userId);
   }
 
 }

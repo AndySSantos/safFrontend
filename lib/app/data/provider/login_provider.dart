@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:safuami/app/data/model/user/credentials.dart';
 
-const baseUrl = 'http://127.0.0.1:8000'; //endpoint
+const baseUrl = 'http://10.0.2.2:8000'; //'http://127.0.0.1:8000'; //endpoint
 
 class LoginProvider extends GetConnect {
 
@@ -39,6 +39,10 @@ class LoginProvider extends GetConnect {
   Future<Response> login({required String email, required String password}) => post('$baseUrl/login',{'email':email,'password':password});
 
   Future<Response> signin({required String email, required String password}) => post('$baseUrl/users',{'email':email,'password':password});
+
+  Future<Response> sendCode({required String userId}) => post('$baseUrl/users/$userId/sendConfirmationCode',{});
+
+  Future<Response> verifyCode({required String userId, required String code}) => post('$baseUrl/users/$userId/verifyCodeConfirmation',{'code':code});
   
   /*
   
