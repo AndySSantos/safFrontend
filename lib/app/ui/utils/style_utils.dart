@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 
-const double SIZED_FLOW_STATE = 450;
-const double SIZED_STATE_1 = 4;
-const double SIZED_STATE_2 = ((SIZED_FLOW_STATE-50)/5)*1;
-const double SIZED_STATE_3 = ((SIZED_FLOW_STATE-50)/5)*2;
-const double SIZED_STATE_4 = ((SIZED_FLOW_STATE-50)/5)*3;
-const double SIZED_STATE_5 = ((SIZED_FLOW_STATE-50)/5)*4;
-const double SIZED_STATE_6 = (((SIZED_FLOW_STATE-50)/5)*5)-4;
-
-const double SIZED_PANEL_ITEM = 40;
-const double SIZED_PANEL_ITEM_ORDER = 90;
+const double SPACE_BETWEEN_WITGETS = 10;
 
 const double SIZED_ICON_LARGE= 40;
 const double SIZED_ICON_MEDIUM = SIZED_ICON_LARGE/2;
@@ -23,7 +14,7 @@ const double SIZED_HEADER1 = SIZED_FOOTER1+SIZED_SECTION1;
 const double SIZED_HEADER2 = SIZED_FOOTER2+SIZED_SECTION2;
 
 
-
+//* Colors
 const Color PRIMARY = Color(0xFF817E9F);
 const Color SECONDARY = Color(0xFF80ED99);
 const Color C_DATE = Color(0xFFfb8b24);

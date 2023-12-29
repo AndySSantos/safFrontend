@@ -13,6 +13,7 @@ class ProfilePage extends GetView<ProfileController> {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       //appBar: AppBar(title: Text('ProfilePage')),
+      resizeToAvoidBottomInset: false,
 
       body: SafeArea(
         child: GetBuilder<ProfileController>(
@@ -50,8 +51,10 @@ class ProfilePage extends GetView<ProfileController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
-                                child: Text(' '),
+                              SizedBox(
+                                child: Text(profileCtrl.profileResum,
+                                  style: TextStyle(color: PRIMARY),
+                                ),
                               ),
                               //Text('Avatar')
                               SizedBox(
@@ -89,13 +92,205 @@ class ProfilePage extends GetView<ProfileController> {
                   ),
                   //*Section
                   Container(
+                    padding: const EdgeInsets.all(SPACE_BETWEEN_WITGETS),
                     constraints: BoxConstraints.expand(
                         height: profileCtrl.sectionHeight.toDouble()),
-                    color: ACC_PROS,
+                    //color: ACC_PROS,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Please fill the input blow here', style: TextStyle(color: PRIMARY),),
-                        
+                        const Text(
+                          'Please fill the input blow here',
+                          style: TextStyle(color: PRIMARY),
+                        ),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+                        //* New user name textfield
+                        TextField(
+                          controller: profileCtrl.userCnt,
+                          decoration: InputDecoration(
+                            labelText: "NEW USER NAME",
+                            labelStyle: const TextStyle(color: UNNOTICED),
+                            filled: true,
+                            fillColor: FREGISTRY,
+                            //enabledBorder: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            //prefixIcon: Image.asset('/assets/images/icon_Mail_.png') ,
+                          ),
+                          style: const TextStyle(color: UNNOTICED),
+                        ),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+                        //* NEW EMAIL textField
+                        TextField(
+                          controller: profileCtrl.emailCnt,
+                          decoration: InputDecoration(
+                            labelText: "NEW EMAIL",
+                            labelStyle: const TextStyle(color: UNNOTICED),
+                            filled: true,
+                            fillColor: FREGISTRY,
+                            //enabledBorder: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            //prefixIcon: Image.asset('/assets/images/icon_Mail_.png',width: 10 ,height: 5,) ,
+                          ),
+                          style: const TextStyle(color: UNNOTICED),
+                        ),
+                        const Text('To save changes enter your password:',style: TextStyle(color: PRIMARY),),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+                        //* Password textField
+                        TextField(
+                          controller: profileCtrl.passCnt,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "YOUR PASSWORD",
+                            labelStyle: const TextStyle(color: UNNOTICED),
+                            filled: true,
+                            fillColor: FREGISTRY,
+                            //enabledBorder: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            //prefixIcon: Image.asset('/assets/images/icon_Mail_.png') ,
+                          ),
+                          style: const TextStyle(color: UNNOTICED),
+                        ),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+
+                        //* New Password fields
+                        Text('Create new password',style: TextStyle(color: PRIMARY),),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+                        //* field New password
+                        TextField(
+                          controller: profileCtrl.newPassCnt,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "New PASSWORD",
+                            labelStyle: const TextStyle(color: UNNOTICED),
+                            filled: true,
+                            fillColor: FREGISTRY,
+                            //enabledBorder: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            //prefixIcon: Image.asset('/assets/images/icon_Mail_.png') ,
+                          ),
+                          style: const TextStyle(color: UNNOTICED),
+                        ),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+                        //* field Cornfirm new password
+                        TextField(
+                          controller: profileCtrl.confirmNewPassCnt,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "YOUR PASSWORD",
+                            labelStyle: const TextStyle(color: UNNOTICED),
+                            filled: true,
+                            fillColor: FREGISTRY,
+                            //enabledBorder: InputBorder.none,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            //prefixIcon: Image.asset('/assets/images/icon_Mail_.png') ,
+                          ),
+                          style: const TextStyle(color: UNNOTICED),
+                        ),
+                        const SizedBox(
+                          height: SPACE_BETWEEN_WITGETS,
+                        ),
+                        //* Buttons actions: DELETE ACCOUNT, SAVE CHANGES
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //* Delete account
+                            TextButton(
+                              onPressed: () {
+                                // Acción al presionar el botón
+                                profileCtrl.actionDeleteAccount();
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.delete_forever_rounded, // Icono predefinido de Flutter
+                                    color: UNNOTICED, // Color del icono
+                                    size: SIZED_ICON_MEDIUM, // Tamaño del icono
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          8), // Espacio entre el icono y el texto
+                                  Text(
+                                    'Delete account',
+                                    style: TextStyle(
+                                      // Estilos del texto del botón
+                                      fontSize: P1,
+                                      color: UNNOTICED,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  EdgeInsets.all(15.0), // Define el padding
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all(DANGER),
+                              ),
+                            ),
+
+                            //* save changes
+
+                            TextButton(
+                              onPressed: () {
+                                // Acción al presionar el botón
+                                profileCtrl.actionSaveChanges();
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.save_as, // Icono predefinido de Flutter
+                                    color: UNNOTICED, // Color del icono
+                                    size: SIZED_ICON_MEDIUM, // Tamaño del icono
+                                  ),
+                                  SizedBox(
+                                      width:
+                                          8), // Espacio entre el icono y el texto
+                                  Text(
+                                    'Save changes',
+                                    style: TextStyle(
+                                      // Estilos del texto del botón
+                                      fontSize: P1,
+                                      color: UNNOTICED,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  EdgeInsets.all(15.0), // Define el padding
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all(INFO),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -127,6 +322,7 @@ class ProfilePage extends GetView<ProfileController> {
           },
         ),
       ),
+      backgroundColor: BACKGROUND,
     );
   }
 }
