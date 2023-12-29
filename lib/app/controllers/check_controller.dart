@@ -97,6 +97,7 @@ class CheckController extends GetxController {
     if (body is ErrorHandler) {
       if (body.code==204){
         EasyLoading.showSuccess('Account validated');
+        Get.close(1);
         Get.toNamed(Routes.HOME);
       }else{
         EasyLoading.showError(body.message);

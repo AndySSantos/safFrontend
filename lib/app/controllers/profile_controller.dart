@@ -39,7 +39,7 @@ class ProfileController extends GetxController {
     email = box.read('email');
     lastfaceUpdate = box.read('lastUpgradeFace');
     
-    profileResum = 'User Information: \n User:$name \n Email: \n $email \n -Last update face: $lastfaceUpdate\n';
+    profileResum = 'User Information: \n -User: $name \n -Email:\n $email \n -Last update face: $lastfaceUpdate\n';
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.25).floor();

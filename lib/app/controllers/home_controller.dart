@@ -50,6 +50,11 @@ class HomeController extends GetxController {
     //error handler
     if (body is ErrorHandler) {
       EasyLoading.showError(body.message);
+      if (body.code == 406){
+        Get.toNamed(Routes.CHECK);
+      }
+      
+
     }
     else if(body is Profile){
       //print(body.token);

@@ -80,7 +80,7 @@ class HomePage extends GetView<HomeController> {
                       ),
                       // * Text: User
                       const Text(
-                        'User',
+                        'Uami friend',
                         style: TextStyle(
                             color: UNNOTICED,
                             fontSize: H1,
