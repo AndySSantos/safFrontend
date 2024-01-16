@@ -58,9 +58,10 @@ class ProfileController extends GetxController {
       if (!condition) {
         invoqueRepository();
         Get.close(1);
+        return;
       }
       
-      //EasyLoading.showInfo('Guardando cambios');
+      EasyLoading.showInfo('Guardando cambios');
       //Get.toNamed(Routes.HOME);
       Get.close(1);
     }

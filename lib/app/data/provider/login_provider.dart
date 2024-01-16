@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:safuami/app/data/model/user/credentials.dart';
 
-const baseUrl = 'http://10.0.2.2:8000'; //'http://127.0.0.1:8000'; //endpoint
+const baseUrl = 'http://127.0.0.1:8000';//'http://10.0.2.2:8000'; //'http://127.0.0.1:8000'; //endpoint
 
 class LoginProvider extends GetConnect {
   Future<Response> getResponseServer() async {
@@ -46,6 +46,12 @@ class LoginProvider extends GetConnect {
 
   Future<Response> getProfile({required String userId}) =>
       get('$baseUrl/users/$userId');
+
+  Future<Response> postForgotPassword({required String email}) => post('$baseUrl/forgotPassword',{'email':email});
+  
+  Future<Response> patchChangePassword({required String password, required String code, required String userId}) => patch('$baseUrl/users/$userId',{'code':code,'password':password});
+  
+  
   /**
    * {
   "currentPassword": "panda35",

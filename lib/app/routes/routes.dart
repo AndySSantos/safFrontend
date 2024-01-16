@@ -7,6 +7,8 @@ abstract class Routes{
   static const SIGNIN = '/signin';
   static const CHECK = '/check';
   static const PROFILE = '/profile';
+  static const CHANGE_PASSWORD = '/change_password';
+  static const FORGOT_PASSWORD = '/forgot_password';
   
 
 }

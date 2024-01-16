@@ -79,4 +79,8 @@ class LoginController extends GetxController {
     box.write('token', token.userId);
   }
 
+  void ForgotPassword(){
+    Get.toNamed(Routes.FORGOT_PASSWORD);
+  }
+
 }

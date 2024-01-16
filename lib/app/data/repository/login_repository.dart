@@ -137,6 +137,62 @@ class LoginRepository {
     }
   }
 
+  Future<Object> postForgotPassword(
+      {required String email}) async {
+    try {
+      final raw = await loginProvider.postForgotPassword(email: email);
+      final data = raw.body;
+
+      // Verificar el contenido de 'data' y manejar excepciones según los casos
+      if (data.containsKey('token')) {
+        return Token.fromJson(data);
+      } else if (data.containsKey('message') && data.containsKey('code')) {
+        return ErrorHandler.fromJson(data);
+      } else {
+        throw CustomException('Respuesta inesperada del servidor');
+      }
+    } catch (e) {
+      throw CustomException('Error de conexión');
+    }
+  }
+
+  Future<Object> patchChangePassword(
+      {required String userId, required String code, required String password}) async {
+    try {
+      final raw = await loginProvider.patchChangePassword(password: password, code: code, userId: userId);
+      final data = raw.body;
+
+      // Verificar el contenido de 'data' y manejar excepciones según los casos
+      if (data.containsKey('message') && data.containsKey('code')) {
+        return ErrorHandler.fromJson(data);
+      } else {
+        throw CustomException('Respuesta inesperada del servidor');
+      }
+    } catch (e) {
+      throw CustomException('Error de conexión');
+    }
+  }
+
+    Future<Object> postChangePassword(
+      {required String userId}) async {
+    try {
+      final raw = await loginProvider.postForgotPassword(email: userId);
+      final data = raw.body;
+      // Verificar el contenido de 'data' y manejar excepciones según los casos
+      if (data.containsKey('token')) {
+        return Token.fromJson(data);
+      } else if (data.containsKey('message') && data.containsKey('code')) {
+        return ErrorHandler.fromJson(data);
+      } else {
+        throw CustomException('Respuesta inesperada del servidor');
+      }
+    } catch (e) {
+      throw CustomException('Error de conexión');
+    }
+  }
+
+
+
   /*
   final MyApi api;
 

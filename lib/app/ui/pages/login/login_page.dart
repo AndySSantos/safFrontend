@@ -47,8 +47,7 @@ class LoginPage extends GetView<LoginController> {
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(20),
-                    constraints:
-                        BoxConstraints.expand(),
+                    constraints: BoxConstraints.expand(),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),
@@ -56,7 +55,7 @@ class LoginPage extends GetView<LoginController> {
                       ),
                       //color: ACC_PROS,
                     ),
-                  
+
                     //widgets form login
                     child: GetBuilder<LoginController>(
                       builder: (loginCtrl) {
@@ -138,18 +137,25 @@ class LoginPage extends GetView<LoginController> {
                                 ),
                               ],
                             ),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  'Forgot password?',
-                                  style: TextStyle(color: SECONDARY),
+                                TextButton(
+                                  onPressed: () {
+                                    loginCtrl.ForgotPassword();
+                                  },
+                                  child: const Text(
+                                    'Forgot password',
+                                    style: TextStyle(
+                                        color: SECONDARY,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ],
                             ),
                             //link: Forgoten password
                             Spacer(),
-                  
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -160,12 +166,11 @@ class LoginPage extends GetView<LoginController> {
                                 ),
                                 // link buttom
                                 TextButton(
-                                  onPressed: (){
-                                    loginCtrl.changeToSignin();
-                                  },
-                                  child: const Text('Sign in',style: TextStyle(color: SECONDARY))
-                                ),
-                                
+                                    onPressed: () {
+                                      loginCtrl.changeToSignin();
+                                    },
+                                    child: const Text('Sign in',
+                                        style: TextStyle(color: SECONDARY))),
                               ],
                             ),
                           ],

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:safuami/app/ui/pages/home/home_page.dart';
+import 'package:safuami/app/ui/pages/login/change_password_page.dart';
+import 'package:safuami/app/ui/pages/login/forgot_password_page.dart';
 import 'package:safuami/app/ui/pages/login/login_page.dart';
 import 'package:safuami/app/ui/pages/profile/profile_page.dart';
 import 'package:safuami/app/ui/pages/signin/check_page.dart';
@@ -16,6 +18,8 @@ abstract class AppPages {
     GetPage(name: Routes.SIGNIN, page:()=> SigninPage(),),
     GetPage(name: Routes.CHECK, page:()=> CheckPage(),),
     GetPage(name: Routes.PROFILE, page:()=> ProfilePage(),),
+    GetPage(name: Routes.FORGOT_PASSWORD, page:()=> ForgotPasswordPage(),),
+    GetPage(name: Routes.CHANGE_PASSWORD, page:()=> ChangePasswordPage(),),
 
   ];
 }
