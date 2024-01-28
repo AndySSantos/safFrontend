@@ -6,6 +6,9 @@ import 'package:safuami/app/ui/pages/login/login_page.dart';
 import 'package:safuami/app/ui/pages/profile/profile_page.dart';
 import 'package:safuami/app/ui/pages/signin/check_page.dart';
 import 'package:safuami/app/ui/pages/signin/signin_page.dart';
+import 'package:safuami/app/ui/pages/turnstile/turnstiles_page.dart';
+import 'package:safuami/app/ui/pages/turnstile/info_turnstile_page.dart';
+
 
 import 'package:safuami/main.dart';
 part './routes.dart';
@@ -20,6 +23,8 @@ abstract class AppPages {
     GetPage(name: Routes.PROFILE, page:()=> ProfilePage(),),
     GetPage(name: Routes.FORGOT_PASSWORD, page:()=> ForgotPasswordPage(),),
     GetPage(name: Routes.CHANGE_PASSWORD, page:()=> ChangePasswordPage(),),
+    GetPage(name: Routes.INFO_TURNSTILE, page:()=> InfoTurnstilePage(),),
+    GetPage(name: Routes.TURNSTILES, page:()=> TurnstilesPage(),),
 
   ];
 }

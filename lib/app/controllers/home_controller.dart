@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:safuami/app/data/model/turnstile/turnstile.dart';
 import 'package:safuami/app/data/repository/login_repository.dart';
 import 'package:safuami/app/data/model/error_handler.dart';
 import 'package:safuami/app/data/model/user/profile.dart';
+import 'package:safuami/app/data/repository/turnstile_repository.dart';
 import 'package:safuami/app/routes/pages.dart';
 
 class HomeController extends GetxController {
@@ -16,6 +18,7 @@ class HomeController extends GetxController {
   int sectionHeight = 0; //? (deviceHeight * 0.6).floor();
   int footerHeight = 0; //? (deviceHeight * 0.1).floor();
   LoginRepository repository = LoginRepository();
+  TurnstileRepository turnstileRepository = TurnstileRepository();
 
   @override
   void onReady() {
@@ -70,5 +73,40 @@ class HomeController extends GetxController {
     box.write('email', profile.email);
     //box.write('user', profile.emailVerified);
     box.write('lastUpgradeFace', profile.lastUpgradeFace);
+  }
+
+  //////////////////////// Este codigo no ira aqui solo se hacen pruebas
+  
+  void InfoTurnstiles(){
+    //invoqueTurnstileRepo();
+    Get.toNamed(Routes.TURNSTILES);
+
+  }
+
+
+  invoqueTurnstileRepo() async{
+    final String idTurnstile = '65a7fefa186826182a109346';
+    final body = await turnstileRepository.getInfoTurnstile(turnstileId: idTurnstile );
+
+    print("Respuesta");
+    print(body);
+    //error handler
+    if (body is ErrorHandler) {
+      EasyLoading.showError(body.message);    
+    }
+    else if(body is Turnstile){
+      //print(body.token);
+      save_cache(body);
+
+      Get.toNamed(Routes.INFO_TURNSTILE);
+    }
+  }
+
+  void save_cache(Turnstile info) {
+    box.write('door', info.gate);
+    box.write('ubication', info.location);
+    box.write('urlPhoto', info.urlPhoto);
+    box.write('state', info.state);
+    
   }
 }

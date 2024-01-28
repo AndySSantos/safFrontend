@@ -220,7 +220,9 @@ class HomePage extends GetView<HomeController> {
                         constraints:
                             BoxConstraints.expand(height: homeCtrl.sectionHeight / 3),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            homeCtrl.InfoTurnstiles();
+                          },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero, // Unfilled
 

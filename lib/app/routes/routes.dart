@@ -9,6 +9,7 @@ abstract class Routes{
   static const PROFILE = '/profile';
   static const CHANGE_PASSWORD = '/change_password';
   static const FORGOT_PASSWORD = '/forgot_password';
-  
+  static const INFO_TURNSTILE = '/info_turnstile';
+  static const TURNSTILES = '/turnstiles';
 
 }
