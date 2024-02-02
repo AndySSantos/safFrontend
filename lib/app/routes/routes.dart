@@ -1,7 +1,7 @@
 part of './pages.dart';
 abstract class Routes{
 
-  static const INITIAL = '/login';
+  static const INITIAL = '/face_registry';
   static const HOME = '/home';
   static const LOGIN = '/login';
   static const SIGNIN = '/signin';
@@ -11,5 +11,6 @@ abstract class Routes{
   static const FORGOT_PASSWORD = '/forgot_password';
   static const INFO_TURNSTILE = '/info_turnstile';
   static const TURNSTILES = '/turnstiles';
+  static const FACE_REGISTRY = '/face_registry';
 
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:safuami/app/ui/pages/access/face_registry_page.dart';
 import 'package:safuami/app/ui/pages/home/home_page.dart';
 import 'package:safuami/app/ui/pages/login/change_password_page.dart';
 import 'package:safuami/app/ui/pages/login/forgot_password_page.dart';
@@ -25,6 +26,7 @@ abstract class AppPages {
     GetPage(name: Routes.CHANGE_PASSWORD, page:()=> ChangePasswordPage(),),
     GetPage(name: Routes.INFO_TURNSTILE, page:()=> InfoTurnstilePage(),),
     GetPage(name: Routes.TURNSTILES, page:()=> TurnstilesPage(),),
+    GetPage(name: Routes.FACE_REGISTRY, page:()=> FaceRegistryPage(),),
 
   ];
 }
