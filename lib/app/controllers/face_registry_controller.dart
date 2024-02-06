@@ -23,7 +23,8 @@ class FaceRegistryController extends GetxController {
   int headerHeight = 0; //? (deviceHeight * 0.3).floor();
   int sectionHeight = 0; //? (deviceHeight * 0.6).floor();
   int footerHeight = 0; //? (deviceHeight * 0.1).floor();
-  final userId = '65aa0bdcdc274d7b99649065'; // box.read('token');
+  final numPhotos = 5;
+  String userId = ''; // box.read('token');
 
   @override
   void onReady() {
@@ -34,6 +35,7 @@ class FaceRegistryController extends GetxController {
   }
 
   FaceRegistryController(Size sizeMobil) {
+    userId = '65aa0bdcdc274d7b99649065';//box.read('token');
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.3).floor();
@@ -64,24 +66,30 @@ class FaceRegistryController extends GetxController {
   }
 
   Future<void> takePhoto() async {
+    String message = '';
     if (isCameraInitialized) {
       final XFile photo = await cameraController.takePicture();
       photoCount++;
 
-      if (photoCount == 5) {
+      isCameraInitialized = (photoCount==numPhotos)? false: true;
+      message = (isCameraInitialized) ? 'Foto $photoCount tomanda':'Ya puedes mandar tus fotografias';
+
+
+      /*if (photoCount == numPhotos) {
         //await cameraController.dispose();
         isCameraInitialized = false;
-        EasyLoading.showSuccess("Ya puedes mandar tus fotos");
+        //EasyLoading.showSuccess("Ya puedes mandar tus fotos");
 
         //savePhotosToZip();
         // Realizar la solicitud HTTP a FastAPI
         //await submitPhotosToFastAPI();
-      }
+      }*/
 
       // Obtén los bytes de la foto y agrégala a la lista
       final List<int> photoData = await photo.readAsBytes();
       photoDataList.add(photoData);
-      EasyLoading.showInfo("Foto $photoCount tomada");
+      //EasyLoading.showInfo("Foto $photoCount tomada");
+      EasyLoading.showInfo(message);
     }
   }
 
@@ -204,6 +212,7 @@ class FaceRegistryController extends GetxController {
 
     // Enviar al servidor
     //await sendToServer(compressedBytes, serverEndpoint);
+    
 
     var request = http.MultipartRequest('POST', Uri.parse(serverEndpoint))
       ..files
@@ -231,16 +240,16 @@ class FaceRegistryController extends GetxController {
   }
 
   void submitPhotos() async {
-    //? 1- save photos in folder iif photos contains 5 or more
-    if (photoDataList.isEmpty || photoCount < 5) {
-      EasyLoading.showError('Necesita tomar almenos 5 fotos');
+    //? 1- save photos in folder iif photos contains numPhotos or more
+    if (photoDataList.isEmpty || photoCount < numPhotos) {
+      EasyLoading.showError('Necesita tomar $numPhotos fotos');
       return;
     }
     String folder = await createImageFolder();
     await saveImages(photoDataList, folder);
     //? 2- save folder photos in zip or tar and send zip to server
-    String server = 'http://10.0.2.2:8000';
-    compressAndSendImages(folder, '$server/upload_file');
+    String server = 'https://6h53zhw9-8000.usw3.devtunnels.ms';//'http://10.0.2.2:8000';
+    compressAndSendImages(folder, '$server/users/$userId/upload_file');
     //? 3- Send zip to server fastAPI
   }
 
@@ -256,7 +265,7 @@ class FaceRegistryController extends GetxController {
     // Manually create a zip of a directory and individual files.
     encoder.create(zipFile);
     encoder.addDirectory(Directory(sourceDir));
-    /*for (var i = 0; i < 5; i++) {
+    /*for (var i = 0; i < numPhotos; i++) {
       encoder.addFile(File('$sourceDir/image_$i.jpg'));
     }*/
     encoder.close();
