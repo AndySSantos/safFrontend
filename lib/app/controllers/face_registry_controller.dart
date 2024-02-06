@@ -1,19 +1,16 @@
+import 'dart:io';
+
+//import 'package:archive/archive_io.dart';
+import 'package:camera/camera.dart';
+import 'package:dio/dio.dart' as conect;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart';
-import 'package:safuami/app/data/model/error_handler.dart';
-import 'package:safuami/app/routes/pages.dart';
-import 'dart:io'; // Agrega esta línea para trabajar con archivos
-import 'package:archive/archive.dart';
-import 'package:archive/archive_io.dart';
-import 'package:flutter_archive/flutter_archive.dart' as zip;
-import 'package:camera/camera.dart';
-import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
+import 'package:safuami/app/data/model/error_handler.dart';
+import 'package:flutter_archive/flutter_archive.dart';
 
 class FaceRegistryController extends GetxController {
   final box = GetStorage();
@@ -35,7 +32,7 @@ class FaceRegistryController extends GetxController {
   }
 
   FaceRegistryController(Size sizeMobil) {
-    userId = '65aa0bdcdc274d7b99649065';//box.read('token');
+    userId = '65aa0bdcdc274d7b99649065'; //box.read('token');
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.3).floor();
@@ -71,19 +68,10 @@ class FaceRegistryController extends GetxController {
       final XFile photo = await cameraController.takePicture();
       photoCount++;
 
-      isCameraInitialized = (photoCount==numPhotos)? false: true;
-      message = (isCameraInitialized) ? 'Foto $photoCount tomanda':'Ya puedes mandar tus fotografias';
-
-
-      /*if (photoCount == numPhotos) {
-        //await cameraController.dispose();
-        isCameraInitialized = false;
-        //EasyLoading.showSuccess("Ya puedes mandar tus fotos");
-
-        //savePhotosToZip();
-        // Realizar la solicitud HTTP a FastAPI
-        //await submitPhotosToFastAPI();
-      }*/
+      isCameraInitialized = (photoCount == numPhotos) ? false : true;
+      message = (isCameraInitialized)
+          ? 'Foto $photoCount tomanda'
+          : 'Ya puedes mandar tus fotografias';
 
       // Obtén los bytes de la foto y agrégala a la lista
       final List<int> photoData = await photo.readAsBytes();
@@ -93,37 +81,7 @@ class FaceRegistryController extends GetxController {
     }
   }
 
-  Future<void> savePhotosToZip() async {
-    if (photoDataList.isEmpty) {
-      // No hay fotos para empaquetar
-      return;
-    }
-
-    final Archive archive = Archive();
-
-    for (int i = 0; i < photoDataList.length; i++) {
-      final List<int> photoData = photoDataList[i];
-      final String fileName = 'photo_$i.jpg';
-
-      archive.addFile(ArchiveFile(fileName, photoData.length, photoData));
-    }
-
-    // Obten la ruta del directorio de documentos
-    final directory = await getApplicationDocumentsDirectory();
-
-    // Construye la ruta completa para el archivo zip
-    final String zipPath = directory.path + '/photos.tar';
-
-    final File file = File(zipPath);
-
-    try {
-      await file.writeAsBytes(TarEncoder().encode(archive));
-      print('Archivo zip guardado en: $zipPath');
-    } catch (e) {
-      print('Error al guardar el archivo zip: $e');
-    }
-  }
-
+/*
   Future<void> submitPhotosToFastAPI() async {
     if (photoDataList.isEmpty) {
       // No hay fotos para enviar
@@ -132,7 +90,7 @@ class FaceRegistryController extends GetxController {
     final userId = '65aa0bdcdc274d7b99649065'; // box.read('token');
     try {
       // Crear una solicitud multipart para enviar archivos
-      var request = http.MultipartRequest(
+      var request = MultipartRequest(
         'POST',
         Uri.parse('http://10.0.2.2:8000/upload_file'),
       );
@@ -167,14 +125,14 @@ class FaceRegistryController extends GetxController {
       print('Error en la solicitud: $e');
     }
   }
+*/
 
   /**
    * Nueva implementacion sugerida por chat-GPT
    */
 
   Future<String> createImageFolder() async {
-    final directory =
-        await getExternalStorageDirectory(); //await getApplicationDocumentsDirectory();
+    final directory = await getExternalStorageDirectory();
     final folderPath = '${directory!.path}/$userId';
 
     if (await Directory(folderPath).exists()) {
@@ -203,40 +161,10 @@ class FaceRegistryController extends GetxController {
     print('Folder path: $folderPath');
     print('Folder : $folder');
     final compressedFilePath = '$folder/$userId.zip';
-    //await Process.run('zip', ['-r', compressedFilePath, folderPath]);
     await zipDirectory(folderPath, compressedFilePath);
-
-    // Leer el archivo comprimido
-    final compressedFile = File(compressedFilePath);
-    List<int> compressedBytes = await compressedFile.readAsBytes();
-
     // Enviar al servidor
-    //await sendToServer(compressedBytes, serverEndpoint);
-    
-
-    var request = http.MultipartRequest('POST', Uri.parse(serverEndpoint))
-      ..files
-          .add(await http.MultipartFile.fromPath('file', compressedFilePath));
-
-    var response = await request.send();
-
-    if (response.statusCode == 200) {
-      print('Solicitud exitosa: ${await response.stream.bytesToString()}');
-    } else {
-      print('Error en la solicitud: ${response.statusCode}');
-    }
-  }
-
-  Future<void> sendToServer(
-      List<int> compressedBytes, String serverEndpoint) async {
-    final response = await http.post(
-      Uri.parse(serverEndpoint),
-      headers: {'Content-Type': 'application/zip'},
-      body: compressedBytes,
-    );
-
-    print('Server Response: ${response.statusCode}');
-    print('Server Body: ${response.body}');
+    EasyLoading.showInfo('Fotos comprimidas');
+    sendToServer(serverEndpoint, compressedFilePath);
   }
 
   void submitPhotos() async {
@@ -248,8 +176,10 @@ class FaceRegistryController extends GetxController {
     String folder = await createImageFolder();
     await saveImages(photoDataList, folder);
     //? 2- save folder photos in zip or tar and send zip to server
-    String server = 'https://6h53zhw9-8000.usw3.devtunnels.ms';//'http://10.0.2.2:8000';
-    compressAndSendImages(folder, '$server/users/$userId/upload_file');
+    String server =
+        'https://6h53zhw9-8000.usw3.devtunnels.ms'; //'http://10.0.2.2:8000';
+    //compressAndSendImages(folder, '$server/users/$userId/upload_file');
+    compressAndSendImages(folder, '$server/upload-zip');
     //? 3- Send zip to server fastAPI
   }
 
@@ -260,16 +190,6 @@ class FaceRegistryController extends GetxController {
   }
 
   Future<void> zipDirectory(String sourceDirName, String zipFileName) async {
-    /*var encoder = ZipFileEncoder();
-    //await encoder.zipDirectoryAsync(Directory(sourceDir), filename: zipFile);
-    // Manually create a zip of a directory and individual files.
-    encoder.create(zipFile);
-    encoder.addDirectory(Directory(sourceDir));
-    /*for (var i = 0; i < numPhotos; i++) {
-      encoder.addFile(File('$sourceDir/image_$i.jpg'));
-    }*/
-    encoder.close();
-    */
     final sourceDir = Directory(sourceDirName);
     final files = [
       File(sourceDir.path + "/image_0.jpg"),
@@ -277,15 +197,47 @@ class FaceRegistryController extends GetxController {
       File(sourceDir.path + "/image_2.jpg"),
       File(sourceDir.path + "/image_3.jpg"),
       File(sourceDir.path + "/image_4.jpg")
-      
     ];
     final zipFile = File(zipFileName);
     try {
-      zip.ZipFile.createFromFiles(
+      ZipFile.createFromFiles(
           sourceDir: sourceDir, files: files, zipFile: zipFile);
-          print('Listo');
+      print('Listo');
     } catch (e) {
       print('Error $e');
+    }
+  }
+
+  Future<void> sendToServer(
+      String serverEndpoint, String compressedFilePath) async {
+    conect.Dio dio = conect.Dio();
+
+    try {
+      File compressedFile = File(compressedFilePath);
+      int fileSize = await compressedFile.length();
+      fileSize+=2000;
+
+      conect.FormData formData = conect.FormData.fromMap({
+        'file': await conect.MultipartFile.fromFile(
+          compressedFilePath,
+          //filename: 'archivo.zip', // Cambia esto según tu necesidad
+        ),
+      });
+
+      conect.Response response = await dio.post(
+        serverEndpoint,
+        data: formData,
+        options: conect.Options(
+          contentType: 'multipart/form-data',
+          headers: {'Content-Length': '$fileSize'},
+          // Puedes añadir más opciones según tus necesidades
+        ),
+      );
+
+      print('Solicitud exitosa: ${response.data}');
+    }
+    catch (e) {
+      print('Error inesperado durante la solicitud: $e');
     }
   }
 }
