@@ -42,3 +42,4 @@ const double P1 = 13;
 const double P2 = 11;
 
 RegExp EMAIL_REGEX = RegExp(r'^[\w-\.]+@(izt|titlani|xanum)\.uam\.mx$');
+const String SERVER = 'https://6h53zhw9-8000.usw3.devtunnels.ms'; //'http://10.0.2.2:8000';';

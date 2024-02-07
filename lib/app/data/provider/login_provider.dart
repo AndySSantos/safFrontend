@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:safuami/app/data/model/user/credentials.dart';
+import 'package:safuami/app/ui/utils/style_utils.dart';
 
-const baseUrl = 'http://127.0.0.1:8000';//'http://10.0.2.2:8000'; //'http://127.0.0.1:8000'; //endpoint
+const baseUrl = SERVER;//'http://127.0.0.1:8000';//'http://10.0.2.2:8000'; //'http://127.0.0.1:8000'; //endpoint
 
 class LoginProvider extends GetConnect {
   Future<Response> getResponseServer() async {

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:convert';
+
 //import 'package:archive/archive_io.dart';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart' as conect;
@@ -11,9 +11,8 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:safuami/app/data/model/error_handler.dart';
 import 'package:flutter_archive/flutter_archive.dart';
-import 'package:safuami/app/ui/utils/style_utils.dart';
 
-class FaceRegistryController extends GetxController {
+class FacialAccessController extends GetxController {
   final box = GetStorage();
   // Obtener la altura y el ancho del dispositivo
   double deviceWidth = 0.0;
@@ -21,9 +20,8 @@ class FaceRegistryController extends GetxController {
   int headerHeight = 0; //? (deviceHeight * 0.3).floor();
   int sectionHeight = 0; //? (deviceHeight * 0.6).floor();
   int footerHeight = 0; //? (deviceHeight * 0.1).floor();
-  final numPhotos = 10;
+  final numPhotos = 5;
   String userId = ''; // box.read('token');
-  String today = '';
 
   @override
   void onReady() {
@@ -33,13 +31,8 @@ class FaceRegistryController extends GetxController {
     super.onReady();
   }
 
-  FaceRegistryController(Size sizeMobil) {
-    userId = box.read('token');
-    DateTime now = DateTime.now();
-    int year = now.year;
-    int month = now.month;
-    int day = now.day;
-    today='$year-$month-$day';
+  FacialAccessController(Size sizeMobil) {
+    userId = '65aa0bdcdc274d7b99649065'; //box.read('token');
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.3).floor();
@@ -88,6 +81,52 @@ class FaceRegistryController extends GetxController {
     }
   }
 
+/*
+  Future<void> submitPhotosToFastAPI() async {
+    if (photoDataList.isEmpty) {
+      // No hay fotos para enviar
+      return;
+    }
+    final userId = '65aa0bdcdc274d7b99649065'; // box.read('token');
+    try {
+      // Crear una solicitud multipart para enviar archivos
+      var request = MultipartRequest(
+        'POST',
+        Uri.parse('http://10.0.2.2:8000/upload_file'),
+      );
+
+      // Agregar cada foto al formulario multipart
+      for (int i = 0; i < photoDataList.length; i++) {
+        final List<int> photoData = photoDataList[i];
+        request.files.add(http.MultipartFile.fromBytes(
+          'file',
+          photoData,
+          filename: 'photo_$i.jpg',
+        ));
+      }
+
+      // Enviar la solicitud
+      var response = await request.send();
+
+      // Manejar la respuesta
+      if (response.statusCode == 200) {
+        // La solicitud fue exitosa, puedes manejar la respuesta según tu lógica
+        print('Solicitud exitosa: ${await response.stream.bytesToString()}');
+        EasyLoading.showSuccess('Fotos correctamente subidas');
+
+        // Luego, puedes manejar la respuesta en tu aplicación según tus necesidades
+        //await handleServerResponse(response);
+      } else {
+        // La solicitud no fue exitosa, manejar errores aquí
+        print('Error en la solicitud: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      // Manejar errores de red u otros errores aquí
+      print('Error en la solicitud: $e');
+    }
+  }
+*/
+
   /**
    * Nueva implementacion sugerida por chat-GPT
    */
@@ -124,7 +163,7 @@ class FaceRegistryController extends GetxController {
     final compressedFilePath = '$folder/$userId.zip';
     await zipDirectory(folderPath, compressedFilePath);
     // Enviar al servidor
-
+    EasyLoading.showInfo('Fotos comprimidas');
     sendToServer(serverEndpoint, compressedFilePath);
   }
 
@@ -139,8 +178,8 @@ class FaceRegistryController extends GetxController {
     //? 2- save folder photos in zip or tar and send zip to server
     String server =
         'https://6h53zhw9-8000.usw3.devtunnels.ms'; //'http://10.0.2.2:8000';
-    compressAndSendImages(folder, '$SERVER/users/$userId/upload_file');
-    //compressAndSendImages(folder, '$server/upload-zip');
+    //compressAndSendImages(folder, '$server/users/$userId/upload_file');
+    compressAndSendImages(folder, '$server/upload-zip');
     //? 3- Send zip to server fastAPI
   }
 
@@ -157,16 +196,11 @@ class FaceRegistryController extends GetxController {
       File(sourceDir.path + "/image_1.jpg"),
       File(sourceDir.path + "/image_2.jpg"),
       File(sourceDir.path + "/image_3.jpg"),
-      File(sourceDir.path + "/image_4.jpg"),
-      File(sourceDir.path + "/image_5.jpg"),
-      File(sourceDir.path + "/image_6.jpg"),
-      File(sourceDir.path + "/image_7.jpg"),
-      File(sourceDir.path + "/image_8.jpg"),
-      File(sourceDir.path + "/image_9.jpg")
+      File(sourceDir.path + "/image_4.jpg")
     ];
     final zipFile = File(zipFileName);
     try {
-      await ZipFile.createFromFiles(
+      ZipFile.createFromFiles(
           sourceDir: sourceDir, files: files, zipFile: zipFile);
       print('Listo');
     } catch (e) {
@@ -181,7 +215,7 @@ class FaceRegistryController extends GetxController {
     try {
       File compressedFile = File(compressedFilePath);
       int fileSize = await compressedFile.length();
-      //fileSize += 2000;
+      fileSize+=2000;
 
       conect.FormData formData = conect.FormData.fromMap({
         'file': await conect.MultipartFile.fromFile(
@@ -199,36 +233,10 @@ class FaceRegistryController extends GetxController {
           // Puedes añadir más opciones según tus necesidades
         ),
       );
-      print('filesize: $fileSize');
+
       print('Solicitud exitosa: ${response.data}');
-
-      String responseData = response.data.toString();
-
-// Buscar la posición de 'code' en la cadena
-      int codeIndex = responseData.indexOf('code');
-
-// Obtener el valor de 'code' a partir de la posición encontrada
-      String codeValue = responseData.substring(codeIndex + 6,
-          codeIndex + 9); // Suponiendo que el valor de code es de 3 dígitos
-
-// Buscar la posición de 'message' en la cadena
-      int messageIndex = responseData.indexOf('message');
-
-// Obtener el valor de 'message' a partir de la posición encontrada
-      String messageValue =
-          responseData.substring(messageIndex + 10, codeIndex-1);
-
-      print('Code: $codeValue');
-      print('Message: $messageValue');
-
-      if (codeValue=='201') {
-        EasyLoading.showInfo('Fotos cargadas, acceso facial en 12 Hrs',duration: Duration(seconds: 5));
-        Get.close(1);
-      } else {
-        EasyLoading.showInfo(messageValue);
-        Get.close(1);
-      }
-    } catch (e) {
+    }
+    catch (e) {
       print('Error inesperado durante la solicitud: $e');
     }
   }

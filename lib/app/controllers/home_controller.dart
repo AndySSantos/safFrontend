@@ -109,4 +109,8 @@ class HomeController extends GetxController {
     box.write('state', info.state);
     
   }
+
+  void upload_photos(){
+    Get.toNamed(Routes.FACE_REGISTRY);
+  }
 }

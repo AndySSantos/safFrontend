@@ -25,7 +25,7 @@ class ProfileController extends GetxController {
   TextEditingController newPassCnt = TextEditingController();
   TextEditingController confirmNewPassCnt = TextEditingController();
   LoginRepository repository = LoginRepository();
-
+  String today = '';
   
   @override
   void onReady() {
@@ -40,6 +40,11 @@ class ProfileController extends GetxController {
     lastfaceUpdate = box.read('lastUpgradeFace');
     
     profileResum = 'User Information: \n -User: $name \n -Email:\n $email \n -Last update face: $lastfaceUpdate\n';
+     DateTime now = DateTime.now();
+    int year = now.year;
+    int month = now.month;
+    int day = now.day;
+    today='$year-$month-$day';
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.25).floor();

@@ -162,6 +162,7 @@ class HomePage extends GetView<HomeController> {
                             TextButton(
                               onPressed: () {
                                 // Acción al presionar el botón
+                                homeCtrl.upload_photos();
                               },
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,

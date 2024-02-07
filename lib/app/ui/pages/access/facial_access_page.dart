@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safuami/app/controllers/face_registry_controller.dart';
+import 'package:safuami/app/controllers/facial_access_controller.dart';
 import 'package:safuami/app/ui/utils/style_utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 
-class FaceRegistryPage extends GetView<FaceRegistryController> {
+class FacialAccess extends GetView<FacialAccessController> {
   @override
   Widget build(BuildContext context) {
     // Obtener el tamaño de la pantalla del dispositivo
@@ -16,8 +16,8 @@ class FaceRegistryPage extends GetView<FaceRegistryController> {
       //appBar: AppBar(title: Text('FaceRegistryPage')),
 
       body: SafeArea(
-        child: GetBuilder<FaceRegistryController>(
-          init: FaceRegistryController(screenSize),
+        child: GetBuilder<FacialAccessController>(
+          init: FacialAccessController(screenSize),
           builder: (faceRegistryCtrl) {
             return Container(
               constraints: BoxConstraints.expand(),
@@ -33,7 +33,8 @@ class FaceRegistryPage extends GetView<FaceRegistryController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // * Date
-                        Text(faceRegistryCtrl.today,
+                        const Text(
+                          'Date today',
                           style: TextStyle(
                             color: C_DATE,
                           ),

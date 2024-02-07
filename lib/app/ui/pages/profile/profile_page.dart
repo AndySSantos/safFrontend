@@ -33,8 +33,8 @@ class ProfilePage extends GetView<ProfileController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // * Date
-                        const Text(
-                          'Date today',
+                        Text(
+                          profileCtrl.today,
                           style: TextStyle(
                             color: C_DATE,
                           ),
