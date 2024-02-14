@@ -8,6 +8,7 @@ import 'package:safuami/app/data/model/error_handler.dart';
 import 'package:safuami/app/data/model/user/profile.dart';
 import 'package:safuami/app/data/repository/turnstile_repository.dart';
 import 'package:safuami/app/routes/pages.dart';
+import 'package:safuami/app/ui/utils/style_utils.dart';
 
 class HomeController extends GetxController {
   final box = GetStorage();
@@ -19,6 +20,7 @@ class HomeController extends GetxController {
   int footerHeight = 0; //? (deviceHeight * 0.1).floor();
   LoginRepository repository = LoginRepository();
   TurnstileRepository turnstileRepository = TurnstileRepository();
+  String today = '';
 
   @override
   void onReady() {
@@ -29,6 +31,11 @@ class HomeController extends GetxController {
   }
 
   HomeController(Size sizeMobil) {
+    DateTime now = DateTime.now();
+    int year = now.year;
+    String month = MONTHS[now.month-1];
+    int day = now.day;
+    today='$month $day, $year';
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.25).floor();
@@ -112,5 +119,8 @@ class HomeController extends GetxController {
 
   void upload_photos(){
     Get.toNamed(Routes.FACE_REGISTRY);
+  }
+  void saf(){
+    Get.toNamed(Routes.FACIAL_ACCESS);
   }
 }

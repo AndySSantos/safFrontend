@@ -106,7 +106,7 @@ class InfoTurnstilePage extends GetView<InfoTurnstileController> {
                           children: [
                             //traffic light
                             SizedBox(
-                              child: Image.asset(infoTurnstileCtrl.urlPhoto),//'assets/images/puerta4.png'
+                              child: Image.asset('assets/images/${infoTurnstileCtrl.urlPhoto}'),//'assets/images/puerta4.png'
                             ),
                           ],
                         ),

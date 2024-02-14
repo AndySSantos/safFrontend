@@ -40,11 +40,11 @@ class ProfileController extends GetxController {
     lastfaceUpdate = box.read('lastUpgradeFace');
     
     profileResum = 'User Information: \n -User: $name \n -Email:\n $email \n -Last update face: $lastfaceUpdate\n';
-     DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
     int year = now.year;
-    int month = now.month;
+    String month = MONTHS[now.month-1];
     int day = now.day;
-    today='$year-$month-$day';
+    today='$month $day, $year';
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.25).floor();

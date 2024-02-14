@@ -21,7 +21,7 @@ class FaceRegistryController extends GetxController {
   int headerHeight = 0; //? (deviceHeight * 0.3).floor();
   int sectionHeight = 0; //? (deviceHeight * 0.6).floor();
   int footerHeight = 0; //? (deviceHeight * 0.1).floor();
-  final numPhotos = 10;
+  final numPhotos = 8;
   String userId = ''; // box.read('token');
   String today = '';
 
@@ -37,9 +37,9 @@ class FaceRegistryController extends GetxController {
     userId = box.read('token');
     DateTime now = DateTime.now();
     int year = now.year;
-    int month = now.month;
+    String month = MONTHS[now.month-1];
     int day = now.day;
-    today='$year-$month-$day';
+    today='$month $day, $year';
     deviceWidth = sizeMobil.width;
     deviceHeight = sizeMobil.height;
     headerHeight = (deviceHeight * 0.3).floor();
@@ -161,8 +161,7 @@ class FaceRegistryController extends GetxController {
       File(sourceDir.path + "/image_5.jpg"),
       File(sourceDir.path + "/image_6.jpg"),
       File(sourceDir.path + "/image_7.jpg"),
-      File(sourceDir.path + "/image_8.jpg"),
-      File(sourceDir.path + "/image_9.jpg")
+
     ];
     final zipFile = File(zipFileName);
     try {

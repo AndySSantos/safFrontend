@@ -36,8 +36,8 @@ class HomePage extends GetView<HomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // * Date
-                      const Text(
-                        'Date today',
+                       Text(
+                        homeCtrl.today,
                         style: TextStyle(
                           color: C_DATE,
                         ),
@@ -126,6 +126,7 @@ class HomePage extends GetView<HomeController> {
                             TextButton(
                               onPressed: () {
                                 // Acción al presionar el botón
+                                homeCtrl.saf();
                               },
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
